@@ -11,3 +11,31 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+/* --- Horizontal Scroll for Categories --- */
+.horizontal-scroll-container {
+  display: flex;
+  overflow-x: auto; /* Enables horizontal scrolling */
+  padding-bottom: 1rem; /* Adds space for the scrollbar so it doesn't overlap content */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+/* Hide scrollbar for a cleaner look */
+.horizontal-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-item {
+  flex: 0 0 auto; /* Prevents items from shrinking */
+  margin-right: 1.5rem; /* Space between category items */
+  width: 100px; /* Set a fixed width for each category item */
+}
+
+/* --- Card Hover Effect --- */
+.product-card {
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1) !important;
+}

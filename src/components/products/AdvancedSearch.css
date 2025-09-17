@@ -1,0 +1,21 @@
+.product-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.form-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.card-img-top {
+  transition: opacity 0.2s ease-in-out;
+}
+
+.card-img-top:hover {
+  opacity: 0.9;
+}

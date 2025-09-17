@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon | Launch Countdown</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            animation: fadeIn 1.2s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, #00b4db, #0083b0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
+        .tagline {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            color: #e6e6e6;
+        }
+        
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        
+        .countdown-box {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px 15px;
+            min-width: 120px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .countdown-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #00b4db, #0083b0);
+        }
+        
+        .countdown-box:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .countdown-value {
+            font-size: 3.5rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 5px;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .countdown-label {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 400;
+            color: #b3e0ff;
+        }
+        
+        .launch-info {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px auto;
+            max-width: 600px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .launch-info h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #80d6ff;
+        }
+        
+        .launch-info p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+        
+        .progress-container {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin: 40px auto;
+            max-width: 600px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, #00b4db, #0083b0);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @media (max-width: 768px) {
+            .countdown {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            
+            .countdown-box {
+                min-width: 100px;
+                padding: 20px 10px;
+            }
+            
+            .countdown-value {
+                font-size: 2.5rem;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .logo {
+                font-size: 2.8rem;
+            }
+            
+            .tagline {
+                font-size: 1.1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px 15px;
+            }
+            
+            .countdown-box {
+                min-width: 70px;
+                padding: 15px 5px;
+            }
+            
+            .countdown-value {
+                font-size: 2rem;
+            }
+            
+            .countdown-label {
+                font-size: 0.9rem;
+                letter-spacing: 2px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .logo {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">DALSTORES</div>
+        <h1>Something Amazing Is Coming</h1>
+        <p class="tagline">We're launching our revolutionary platform that will change the way you think about shopping. Stay tuned for the big reveal!</p>
+        
+        <div class="countdown">
+            <div class="countdown-box">
+                <span id="hours" class="countdown-value">12</span>
+                <span class="countdown-label">Hours</span>
+            </div>
+            <div class="countdown-box">
+                <span id="minutes" class="countdown-value">00</span>
+                <span class="countdown-label">Minutes</span>
+            </div>
+            <div class="countdown-box">
+                <span id="seconds" class="countdown-value">00</span>
+                <span class="countdown-label">Seconds</span>
+            </div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progress"></div>
+        </div>
+        
+        <div class="launch-info">
+            <h2><i class="fas fa-rocket"></i> Launch Details</h2>
+            <p>Our platform will go live on <strong id="launch-date"></strong> at <strong>10:00 AM</strong></p>
+            <p>Get ready for whats is coming!</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set launch time to tomorrow at 10:00 AM
+            const now = new Date();
+            const launchDate = new Date();
+            
+            // Set to tomorrow
+            launchDate.setDate(now.getDate() + 1);
+            // Set to 10:00 AM
+            launchDate.setHours(10, 0, 0, 0);
+            
+            // Format and display the launch date
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('launch-date').textContent = launchDate.toLocaleDateString('en-US', options);
+            
+            // Update the countdown every second
+            const countdownTimer = setInterval(function() {
+                const now = new Date().getTime();
+                const distance = launchDate - now;
+                
+                // If the countdown is over
+                if (distance < 0) {
+                    clearInterval(countdownTimer);
+                    document.querySelector('h1').textContent = "We're Live!";
+                    document.querySelector('.tagline').textContent = "Our platform is now available. Welcome to the future!";
+                    document.getElementById('hours').textContent = '00';
+                    document.getElementById('minutes').textContent = '00';
+                    document.getElementById('seconds').textContent = '00';
+                    document.getElementById('progress').style.width = '100%';
+                    return;
+                }
+                
+                // Calculate hours, minutes, seconds
+                const hours = Math.floor(distance / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                // Display the results
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+                
+                // Update progress bar
+                const totalHours = 24;
+                const hoursPassed = totalHours - hours;
+                const progress = (hoursPassed / totalHours) * 100;
+                document.getElementById('progress').style.width = progress + '%';
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
