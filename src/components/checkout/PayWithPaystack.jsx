@@ -9,7 +9,7 @@ const PayWithPaystack = ({ amount, onSuccess }) => {
     reference: new Date().getTime().toString(),
     email: userInfo?.email || "guest@example.com",
     amount: amount * 100, // in kobo
-    publicKey: "pk_test_8f8bba41c278c6468f465b207bbe88f7a941f34f", // replace with your Paystack test key
+    publicKey: "pk_test_6f6f116d5666efaed6554f154531dfca64096ff0", // replace with your Paystack test key
   };
 
   return (

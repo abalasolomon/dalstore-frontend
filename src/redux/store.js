@@ -32,9 +32,17 @@ import {
   productCreateReducer,
   productUpdateReducer,
   productDeleteReducer,
+  productRelatedReducer,
+  productCategoryReducer,
+  productTagReducer,
+
   //  productReviewCreateReducer,
   // productTopRatedReducer,
 } from "./reducers/productReducers";
+import {
+  productReviewListReducer,
+  productReviewCreateReducer,
+} from "./reducers/reviewReducers";
 import {
   categoryListReducer,
   categoryDetailsReducer,
@@ -46,6 +54,11 @@ import {
   userOrdersReducer,
   orderDetailReducer,
 } from "./reducers/orderReducers";
+import {
+  userProfileReducer,
+  userProfileUpdateReducer,
+  userPasswordUpdateReducer,
+} from "./reducers/accountReducers";
 const reducer = combineReducers({
   userLogin: userLoginReducers,
   userRegister: userRegisterReducers,
@@ -53,6 +66,10 @@ const reducer = combineReducers({
   emailOtpVerify: emailOtpVerifyReducer,
   emailOtpResend: emailOtpResendReducer,
 
+  // ✅ Account/Profile
+  userProfile: userProfileReducer,
+  userProfileUpdate: userProfileUpdateReducer,
+  userPasswordUpdate: userPasswordUpdateReducer,
   //categories
   categoryList: categoryListReducer,
   categoryDetails: categoryDetailsReducer,
@@ -65,8 +82,12 @@ const reducer = combineReducers({
   productCreate: productCreateReducer,
   productUpdate: productUpdateReducer,
   productDelete: productDeleteReducer,
-  // productReviewCreate: productReviewCreateReducer,
-  // productTopRated: productTopRatedReducer,
+  productCategory: productCategoryReducer,
+  productTag: productTagReducer,
+
+  productReviews: productReviewListReducer,
+  reviewCreate: productReviewCreateReducer,
+  relatedProducts: productRelatedReducer,
 
   cartList: cartListReducer,
   cartUpdate: cartUpdateReducer,

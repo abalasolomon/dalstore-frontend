@@ -23,7 +23,7 @@ const Unauthorized = () => {
               <Button 
                 as={Link} 
                 to="/" 
-                variant="primary" 
+                variant="dark" 
                 className="w-100 d-flex align-items-center justify-content-center"
               >
                 <FaHome className="me-2" />

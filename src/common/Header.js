@@ -65,7 +65,7 @@ const Header = () => {
     >
       <Container>
         <Navbar.Brand as={Link} to="/" className="logo">
-          <img src={logo} alt="DalStore Logo" height="60" className="me-2"/>
+          <img src={logo} alt="DalStore Logo" height="40" />
           {/* <span className="text-primary">Dal</span>Store */}
         </Navbar.Brand>
 

@@ -307,7 +307,7 @@ const AdvancedSearch = () => {
                           <span className="text-decoration-line-through text-muted me-2">
                             ₦{product.price}
                           </span>
-                          <span className="text-success fw-bold">
+                          <span className="text-primary fw-bold">
                             ₦{product.promo_price}
                           </span>
                         </div>
@@ -324,7 +324,7 @@ const AdvancedSearch = () => {
                             {"☆".repeat(5 - Math.round(product.average_rating))}
                           </small>
                           <small className="text-muted ms-1">
-                            ({product.review_count})
+                            ({product.total_reviews})
                           </small>
                         </div>
                       )}

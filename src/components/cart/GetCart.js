@@ -19,9 +19,10 @@ import {
   decreaseCartItem,
   clearCart,
 } from "../../redux/actions/cartActions";
-import Message from "../../common/Message";
+//import Message from "../../common/Message";
 import Loader from "../../common/Loader";
 import { useNavigate } from "react-router-dom";
+import { showSuccess } from "../../common/toastConfig";
 
 const GetCart = () => {
   const dispatch = useDispatch();
@@ -50,8 +51,11 @@ const GetCart = () => {
   };
 
   const clearCartHandler = () => {
+
     dispatch(clearCart());
+    dispatch({type: "CART_LIST_RESET"})
     dispatch(listCart())
+    showSuccess("Cart cleared successfully");
     setShowConfirm(false); // close modal after clearing
   };
 

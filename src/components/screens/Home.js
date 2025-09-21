@@ -31,6 +31,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../../redux/actions/productActions";
 import { Link } from "react-router-dom";
 import { addToCart } from "../../redux/actions/cartActions";
+import { listCategories } from "../../redux/actions/categoryActions";
+import Loader from "../../common/Loader";
 //import { addToCart } from "../../redux/actions/cartActions";
 const Home = () => {
   const dispatch = useDispatch();
@@ -38,8 +40,11 @@ const Home = () => {
 
   const productList = useSelector((state) => state.productList);
   const { products, loading, error, page, pages } = productList;
-
+  const { categories, loading: loadingCategories } = useSelector(
+      (state) => state.categoryList || {}
+    );
   useEffect(() => {
+    dispatch(listCategories());
     dispatch(listProducts());
   }, [dispatch]);
 
@@ -85,57 +90,7 @@ const Home = () => {
     }
   };
 
-  const categories = [
-    {
-      name: "Apparel",
-      img: "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400",
-    },
-    {
-      name: "Electronics",
-      img: "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=400",
-    },
-    {
-      name: "Footwear",
-      img: "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400",
-    },
-    {
-      name: "Accessories",
-      img: "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400",
-    },
-    {
-      name: "Home Goods",
-      img: "https://images.unsplash.com/photo-1556020685-ae41abfc9365?w=400",
-    },
-    {
-      name: "Beauty",
-      img: "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400",
-    },
-    {
-      name: "Beauty",
-      img: "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400",
-    },
-    {
-      name: "Beauty",
-      img: "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400",
-    },
-    {
-      name: "Beauty",
-      img: "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400",
-    },
-    {
-      name: "Accessories",
-      img: "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400",
-    },
-    {
-      name: "Accessories",
-      img: "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400",
-    },
-    {
-      name: "Accessories",
-      img: "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=400",
-    },
-  ];
-
+  
   // const deals = [
   //   {
   //     title: "Flash Sale",
@@ -256,15 +211,16 @@ const Home = () => {
         <section className="mb-5">
           <h2 className="mb-4 fw-bold text-center">Shop by Category</h2>
           {/* This div enables horizontal scrolling on small screens */}
-          <div className=" horizontal-scroll-container">
+          {loadingCategories && <Loader />}
+          {categories && <div className=" horizontal-scroll-container">
             {categories.map((category, index) => (
               <div key={index} className="scroll-item">
                 <a
-                  href={`/?categories=${categories.id}`}
+                  href={`/category/${category.slug}`}
                   className="text-decoration-none text-dark text-center"
                 >
                   <img
-                    src={category.img}
+                    src={category.image}
                     alt={category.name}
                     className="rounded-circle mb-2"
                     style={{
@@ -278,6 +234,7 @@ const Home = () => {
               </div>
             ))}
           </div>
+}
         </section>
       </Container>
 
@@ -421,9 +378,11 @@ const Home = () => {
                         className="stretched-link text-decoration-none text-dark"
                       ></Link>
                       <Card.Title className="fs-6 mb-1">
-                        {product?.name}
+                        {product?.name?.length > 50
+                          ? product?.name?.substring(0, 50) + "..."
+                          : product?.name }
                       </Card.Title>
-                      <StarRating rating={product?.rating} />
+                      <StarRating rating={product?.average_rating} />
 
                       {/* --- 2. Conditional Price Display --- */}
                       <div className="mt-auto">

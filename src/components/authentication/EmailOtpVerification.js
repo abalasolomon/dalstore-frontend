@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { Container, Card, Form, Button, Row, Col } from "react-bootstrap";
 import { Envelope, ArrowLeft, CheckCircle } from "react-bootstrap-icons";
 import { Link, useNavigate } from "react-router-dom";
@@ -22,8 +22,13 @@ const EmailOtpVerification = () => {
   const emailOtpVerify = useSelector((state) => state.emailOtpVerify);
   const { loading, success, error } = emailOtpVerify;
 
-  const userRegisterData = JSON.parse(localStorage.getItem("registrationData")) || {};
+  //const userRegisterData = JSON.parse(localStorage.getItem("registrationData")) || {};
 
+  const userRegisterData = useMemo(() => {
+    const registrationData = localStorage.getItem("registrationData");
+    return registrationData ? JSON.parse(registrationData) : {};
+  }, []);
+  
   useEffect(() => {
     if (success) {
       setShowSuccessMessage(true);
@@ -147,7 +152,7 @@ const EmailOtpVerification = () => {
   return (
     <Container style={{ paddingTop: "3rem", paddingBottom: "3rem", minHeight: "100vh", display: "flex", alignItems: "center" }}>
       <Row className="justify-content-center w-100">
-        <Col md={8} lg={8} xl={4}>
+        <Col md={8} lg={8} xl={12}>
           <Card style={{ borderRadius: "1rem", boxShadow: "0 .125rem .25rem rgba(0,0,0,.075)" }}>
             <Card.Body className="p-3">
               {showSuccessMessage ? (
@@ -197,7 +202,7 @@ const EmailOtpVerification = () => {
                     {resendMessage && <div className="text-success text-center mb-2">{resendMessage}</div>}
 
                     <Button
-                      variant="primary"
+                      variant="dark"
                       type="submit"
                       className="w-100 rounded-pill mb-3"
                       disabled={isLoading || otp.some((digit) => digit === "")}
@@ -208,11 +213,11 @@ const EmailOtpVerification = () => {
                     <div className="text-center">
                       <p className="text-muted mb-2">
                         Didn't receive code?{" "}
-                        <Button variant="link" className="p-0" onClick={handleResend} disabled={resendDisabled}>
+                        <Button variant="light" className="p-0" onClick={handleResend} disabled={resendDisabled}>
                           Resend {resendDisabled && `(${countdown}s)`}
                         </Button>
                       </p>
-                      <Button as={Link} to="/login" variant="link" className="text-muted">
+                      <Button as={Link} to="/login" variant="light" className="text-muted">
                         <ArrowLeft className="me-1" /> Back to Login
                       </Button>
                     </div>

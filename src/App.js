@@ -22,6 +22,10 @@ import GetAccount from "./components/account/GetAccount";
 import ChangePassword from "./components/account/ChangePassword";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import About from "./components/screens/About";
+import Contact from "./components/screens/Contact";
+import UserProfile from "./components/account/UserProfile";
+import CategoryProducts from "./components/products/CategoryProducts";
 // Initialize once in your App.js
 
 
@@ -51,11 +55,15 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/search" element={<AdvancedSearch />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
             <Route
               path="/verify-email-otp"
               element={<EmailOtpVerification />}
             />
             <Route path="/product/:slug" element={<ProductDetails />} />
+            <Route path="/category/:slug" element={<CategoryProducts />} />
+
             <Route
               path="/cart"
               element={
@@ -87,6 +95,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <GetAccount />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/account/profile"
+              element={
+                <PrivateRoute>
+                  <UserProfile />
                 </PrivateRoute>
               }
             />

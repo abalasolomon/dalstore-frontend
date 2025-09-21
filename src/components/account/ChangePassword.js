@@ -96,7 +96,7 @@ const ChangePassword = () => {
                   </Form.Control.Feedback>
                 </Form.Group>
 
-                <Button type="submit" variant="primary">
+                <Button type="submit" variant="dark">
                   Update Password
                 </Button>
 

@@ -7,7 +7,7 @@ function Loader() {
     <>
       <div className="d-flex justify-content-center align-items-center vh-5">
         <span className="visually-hidden">Loading...</span>
-        <ClipLoader color="blue" size={50} />
+        <ClipLoader color="dark" size={50} />
       </div>
     </>
   );

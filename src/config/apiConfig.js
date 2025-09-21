@@ -1,12 +1,10 @@
 // apiConfig.js
 
-// export const API_URL = "http://127.0.0.1:8000" ;  
+export const API_URL = "http://127.0.0.1:8000" ;  
 // export const API_HOST = "127.0.0.1:8000";
-export const API_URL =  "http://localhost:8000" //"https://backend.dalstores.com.ng" ;  
-export const API_HOST = "https://backend.dalstores.com.ng";
+ //export const API_URL =  "https://backend.dalstores.com.ng" ; //  
+ export const API_HOST = "https://backend.dalstores.com.ng";
 
-// export const API_URL = "https://backend.beautynest247.com";    
-// export const API_HOST = "backend.beautynest247.com";    
 
 export const getAuthConfig = (userInfo) => ({
   headers: {

@@ -49,7 +49,7 @@ const PayWithFlutterwave = ({ amount, onSuccess }) => {
 
   const flutterwaveConfig = {
    // public_key: "FLWPUBK_TEST-adba8a6a2cda1599b93ce17b87103b89-X",
-   public_key: "FLWPUBK_TEST-239cad6ba5c3a5a8b4a9f263f18537d8-X", // replace with your Flutterwave test key 
+   public_key: "FLWPUBK_TEST-adba8a6a2cda1599b93ce17b87103b89-X", // replace with your Flutterwave test key 
    tx_ref: Date.now(),
     amount,
     currency: "NGN",

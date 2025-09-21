@@ -11,19 +11,19 @@ const Footer = () => {
 
   const quickLinks = [
     { name: 'Home', path: '/' },
-    { name: 'Shop', path: '/shop' },
+    // { name: 'Shop', path: '/shop' },
     { name: 'About Us', path: '/about' },
     { name: 'Contact', path: '/contact' },
-    { name: 'FAQ', path: '/faq' },
+    // { name: 'FAQ', path: '/faq' },
     { name: 'Privacy Policy', path: '/privacy' },
   ];
 
   const customerService = [
     { name: 'My Account', path: '/account' },
-    { name: 'Order Tracking', path: '/track-order' },
-    { name: 'Wishlist', path: '/wishlist' },
-    { name: 'Shipping Info', path: '/shipping' },
-    { name: 'Returns & Exchanges', path: '/returns' },
+    // { name: 'Order Tracking', path: '/track-order' },
+    // { name: 'Wishlist', path: '/wishlist' },
+    // { name: 'Shipping Info', path: '/shipping' },
+    // { name: 'Returns & Exchanges', path: '/returns' },
   ];
 
   const socialLinks = [
@@ -90,7 +90,7 @@ const Footer = () => {
             <div className="footer-contact">
               <p className="mb-3">
                 <GeoAlt className="me-2" />
-                ikeja, Lagos
+                Lekki, Lagos
               </p>
               <p className="mb-3">
                 <Telephone className="me-2" />

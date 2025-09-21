@@ -1,18 +1,33 @@
-import React from "react";
-import { Container, Row, Col, Card, Button } from "react-bootstrap";
-import { Person, BoxSeam, Heart, Gear, Lock } from "react-bootstrap-icons";
+import React, { useEffect } from "react";
+import { Container, Row, Col, Card } from "react-bootstrap";
+import {
+  Person,
+  BoxSeam,
+  //Heart,
+  Gear,
+  Lock,
+} from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
+import { getUserProfile } from "../../redux/actions/accountActions";
+import { useDispatch, useSelector } from "react-redux";
+import Loader from "../../common/Loader";
 
 const GetAccount = () => {
-  const user = {
-    name: "John Doe",
-    email: "johndoe@example.com",
-  };
+  const dispatch = useDispatch();
+
+  const { profile, loading } = useSelector((state) => state.userProfile);
+  useEffect(() => {
+    dispatch(getUserProfile());
+  }, [dispatch]);
 
   const accountLinks = [
-    { icon: <Person />, label: "Profile Information", path: "/account/profile" },
+    {
+      icon: <Person />,
+      label: "Profile Information",
+      path: "/account/profile",
+    },
     { icon: <BoxSeam />, label: "My Orders", path: "/orders" },
-    { icon: <Heart />, label: "Wishlist", path: "/account/wishlist" },
+    // { icon: <Heart />, label: "Wishlist", path: "/account/wishlist" },
     { icon: <Gear />, label: "Settings", path: "/account/settings" },
     { icon: <Lock />, label: "Change Password", path: "/account/password" },
   ];
@@ -31,16 +46,17 @@ const GetAccount = () => {
                   <Person />
                 </div>
               </div>
-              <h5 className="mb-1">{user.name}</h5>
-              <p className="text-muted">{user.email}</p>
-              <Button
+              {loading && <Loader />}
+              <h5 className="mb-1">{profile?.name}</h5>
+              <p className="text-muted">{profile?.email}</p>
+              {/* <Button
                 as={Link}
                 to="/logout"
                 variant="outline-primary"
                 size="sm"
               >
                 Logout
-              </Button>
+              </Button> */}
             </Card.Body>
           </Card>
         </Col>

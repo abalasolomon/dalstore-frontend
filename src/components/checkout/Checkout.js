@@ -54,6 +54,7 @@ const Checkout = () => {
       // Dispatch backend funding call
       
       dispatch(createOrder(payload)).then(() => {
+        dispatch({ type: "CART_LIST_RESET" }); // Clear cart after order creation
         navigate("/orders"); // Redirect to success page
       });
 

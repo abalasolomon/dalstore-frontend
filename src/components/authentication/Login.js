@@ -83,7 +83,7 @@ function LoginScreen() {
             <h3 className="text-center mb-4">Welcome Back</h3>
           {/* Messages for loading, error, success */}
           {loading && <Loader />}
-          {error && <Message variant="danger">{error}</Message>}
+          {error && <Message variant="danger">{error === "Invalid token" ? " Invalid Username or Password ": error}</Message>}
           {success && userInfo && userInfo.is_email_verified && <Message variant="success">Login successful! Redirecting...</Message>}
           {success && userInfo && !userInfo.is_email_verified && <Message variant="warning">Login successful! Please verify your email. Redirecting...</Message>}
             <Form onSubmit={submitHandler}>

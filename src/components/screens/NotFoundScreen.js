@@ -20,7 +20,7 @@ const NotFoundScreen = () => {
       </Row>
       <Row>
         <Col className="text-center">
-          <Button as={Link} to="/" variant="primary" size="lg">
+          <Button as={Link} to="/" variant="dark" size="lg">
             <HouseDoor className="me-2" />
             Go Back Home
           </Button>
