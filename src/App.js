@@ -26,8 +26,17 @@ import About from "./components/screens/About";
 import Contact from "./components/screens/Contact";
 import UserProfile from "./components/account/UserProfile";
 import CategoryProducts from "./components/products/CategoryProducts";
+import Index from "./dashboard";
+import GetAllCategories from "./components/categories/GetAllCategories";
+import CreateCategory from "./components/categories/CreateCategory";
+import EditCategory from "./components/categories/EditCategory";
+import GetAllProducts from "./components/products/GetAllProducts";
+import CreateProduct from "./components/products/CreateProduct";
+import EditProduct from "./components/products/EditProduct";
+import GetAllOrders from "./components/orders/GetAllOrders";
+import AdminGetUserOrderDetail from "./components/orders/AdminGetUserOrderDetail";
+import GetAllUsers from "./components/users/GetAllUsers";
 // Initialize once in your App.js
-
 
 function App() {
   const [isMobile, setIsMobile] = useState(false);
@@ -142,14 +151,90 @@ function App() {
             />
 
             {/* Admin Dashboard Example */}
-            {/* <Route 
-              path="/admin" 
+            <Route
+              path="/admin/dashboard"
               element={
-                <PrivateRoute roles={['admin', 'superadmin']}>
-                  <AdminDashboard />
+                <PrivateRoute roles={["admin", "superadmin"]}>
+                  <Index />
                 </PrivateRoute>
-              } 
-            /> */}
+              }
+            />
+<Route
+              path="/admin/users"
+              element={
+                <PrivateRoute roles={["admin", "superadmin"]}>
+                  <GetAllUsers />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/admin/orders"
+              element={
+                <PrivateRoute roles={["admin", "superadmin"]}>
+                  <GetAllOrders />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/admin/orders/:id"
+              element={
+                <PrivateRoute roles={["admin", "superadmin"]}>
+                  <AdminGetUserOrderDetail />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/admin/products"
+              element={
+                <PrivateRoute roles={["admin", "superadmin"]}>
+                  <GetAllProducts />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path="/admin/product/create"
+              element={
+                <PrivateRoute roles={["admin", "superadmin"]}>
+                  <CreateProduct />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path="/admin/product/:slug/edit"
+              element={
+                <PrivateRoute roles={["admin", "superadmin"]}>
+                  <EditProduct />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/admin/categories"
+              element={
+                <PrivateRoute roles={["admin", "superadmin"]}>
+                  <GetAllCategories />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path="/admin/category/:slug/edit"
+              element={
+                <PrivateRoute roles={["admin", "superadmin"]}>
+                  <EditCategory />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path="/admin/category/create"
+              element={
+                <PrivateRoute roles={["admin", "superadmin"]}>
+                  <CreateCategory />
+                </PrivateRoute>
+              }
+            />
 
             {/* Catch-all route for 404 */}
             <Route path="*" element={<NotFoundScreen />} />
@@ -162,4 +247,3 @@ function App() {
 }
 
 export default App;
-

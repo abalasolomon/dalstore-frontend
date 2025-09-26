@@ -6,7 +6,7 @@ import {
   Card,
   Button,
   //  Form,
-  Carousel,
+  //Carousel,
   Badge,
 } from "react-bootstrap";
 import {
@@ -33,6 +33,7 @@ import { Link } from "react-router-dom";
 import { addToCart } from "../../redux/actions/cartActions";
 import { listCategories } from "../../redux/actions/categoryActions";
 import Loader from "../../common/Loader";
+import HeroCarousel from "../../common/HeroCarousel";
 //import { addToCart } from "../../redux/actions/cartActions";
 const Home = () => {
   const dispatch = useDispatch();
@@ -135,7 +136,7 @@ const Home = () => {
   return (
     <div className="electronics-store">
       {/* Hero Carousel */}
-      <Carousel fade className="hero-carousel mb-4">
+      {/* <Carousel fade className="hero-carousel mb-4">
         <Carousel.Item>
           <div
             className="hero-slide d-flex align-items-center"
@@ -188,8 +189,8 @@ const Home = () => {
             </Container>
           </div>
         </Carousel.Item>
-      </Carousel>
-
+      </Carousel> */}
+        <HeroCarousel />
       {/* Deals Bar */}
       {/* <Container className="mb-5">
         <Row xs={2} md={3} lg={4} className="g-3">
@@ -253,101 +254,6 @@ const Home = () => {
             {error && <p className="text-danger">Error: {error}</p>}
             {products.map((product) => (
               <>
-                {/* <Col key={product.id} xs={12} sm={6} md={4} lg={3}>
-                  <Card className="h-100 product-card border-0 shadow-sm position-relative">
-                    <Link
-                      to={`/product/${product.slug}`}
-                      className="stretched-link text-decoration-none text-dark"
-                    >
-                      <div className="position-relative bg-white text-center py-3">
-                        <img
-                          src={
-                            product.images && product.images.length > 0
-                              ? product.images[0].image
-                              : "/placeholder.png"
-                          }
-                          alt={product.name}
-                          className="img-fluid"
-                          loading="lazy"
-                          style={{ height: "180px", objectFit: "contain" }}
-                        />
-                        <button
-                          className={`favorite-btn position-absolute top-0 end-0 m-2 btn btn-sm ${
-                            favorites[product.id] ? "btn-danger" : "btn-light"
-                          }`}
-                          onClick={(e) => {
-                            e.preventDefault(); // prevent navigation when clicking heart
-                            toggleFavorite(product.id);
-                          }}
-                        >
-                          {favorites[product.id] ? <HeartFill /> : <Heart />}
-                        </button>
-                        {product?.promo_price &&
-                          product?.promo_price < product?.price && (
-                            <span className="badge bg-danger position-absolute top-0 start-0 m-2">
-                              {Math.round(
-                                (1 - product.promo_price / product.price) * 100
-                              )}
-                              % OFF
-                            </span>
-                          )}
-                      </div>
-
-                      <Card.Body>
-                        <div className="d-flex justify-content-between align-items-start mb-2">
-                          <span className="badge bg-light text-dark">
-                            {product?.category}
-                          </span>
-                          <div className="product-rating">
-                            {StarRating(product.rating || 0)}
-                            <small className="ms-1">
-                              ({product.rating || 0})
-                            </small>
-                          </div>
-                        </div>
-
-                        <h5 className="text-muted small mb-1">
-                          {product.name?.substring(0, 80)}...
-                        </h5>
-                        <p className="text-muted small mb-2">
-                          {product.description?.substring(0, 80)}...
-                        </p>
-
-                        {product.tags?.length > 0 && (
-                          <div className="mb-2 d-flex flex-wrap gap-1">
-                            {product.tags.map((tag, idx) => (
-                              <span
-                                key={idx}
-                                className="badge bg-info text-white small text-uppercase"
-                              >
-                                {tag}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                        {product?.promo_price &&
-                        product.price > product.promo_price ? (
-                          <div className="product-price mb-3">
-                            <span className="fw-bold text-dark">
-                              N{product.promo_price}
-                            </span>
-                            {product.price && (
-                              <span className="text-muted text-decoration-line-through ms-2">
-                                N{product.price}
-                              </span>
-                            )}
-                          </div>
-                        ) : (
-                          <div className="product-price mb-3">
-                            <span className="fw-bold text-dark">
-                              N{product.price}
-                            </span>
-                          </div>
-                        )}
-                      </Card.Body>
-                    </Link>
-                  </Card>
-                </Col> */}
                 <Col key={product.id} xs={6} md={3} lg={3} ref={lastProductRef}>
                   <Card className="h-100 border-0 shadow-sm product-card">
                     {/* Image container for positioning the tag */}

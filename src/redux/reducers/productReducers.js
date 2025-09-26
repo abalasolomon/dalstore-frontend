@@ -25,6 +25,9 @@ import {
   PRODUCT_CATEGORY_REQUEST,
   PRODUCT_CATEGORY_SUCCESS,
   PRODUCT_CATEGORY_FAIL,
+   PRODUCT_IMAGE_DELETE_REQUEST,
+  PRODUCT_IMAGE_DELETE_SUCCESS,
+  PRODUCT_IMAGE_DELETE_FAIL,
 } from '../constants/productConstants'
 
 export const productListReducer = (
@@ -145,6 +148,18 @@ export const productTagReducer = (state = { products: [] }, action) => {
     case PRODUCT_TAG_SUCCESS:
       return { loading: false, products: action.payload };
     case PRODUCT_TAG_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+export const productImageDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case PRODUCT_IMAGE_DELETE_REQUEST:
+      return { loading: true };
+    case PRODUCT_IMAGE_DELETE_SUCCESS:
+      return { loading: false, success: true, imageId: action.payload };
+    case PRODUCT_IMAGE_DELETE_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;

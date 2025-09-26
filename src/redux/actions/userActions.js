@@ -157,7 +157,7 @@ export const getAllUsers = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`${API_URL}/api/get-all-users/`, config);
+    const { data } = await axios.get(`${API_URL}/api/users/all-users/`, config);
 
     dispatch({ type: GET_ALL_USERS_SUCCESS, payload: data });
   } catch (error) {

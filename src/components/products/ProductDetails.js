@@ -4,11 +4,12 @@ import {
   Container,
   Row,
   Col,
+  //Card,
   Button,
   Badge,
   Alert,
   Modal,
-  Form, 
+  Form,
 } from "react-bootstrap";
 import {
   StarFill,
@@ -25,10 +26,12 @@ import {
 } from "react-bootstrap-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductDetails } from "../../redux/actions/productActions";
-import { listProductReviews, createProductReview } from "../../redux/actions/reviewActions";
+import {
+  listProductReviews,
+  createProductReview,
+} from "../../redux/actions/reviewActions";
 
-
-import { addToCart } from "../../redux/actions/cartActions";
+import { addToCart, listCart } from "../../redux/actions/cartActions";
 import Loader from "../../common/Loader";
 import Message from "../../common/Message";
 import "./ProductDetails.css";
@@ -40,8 +43,10 @@ const ProductDetails = () => {
   const { product, loading, error } = useSelector(
     (state) => state.productDetails
   );
-const { reviews, loading: reviewLoading } = useSelector((state) => state.productReviews);
-//const { related, loading: relatedLoading } = useSelector((state) => state.relatedProducts);
+  const { reviews, loading: reviewLoading } = useSelector(
+    (state) => state.productReviews
+  );
+  //const { related, loading: relatedLoading } = useSelector((state) => state.relatedProducts);
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedVariant, setSelectedVariant] = useState(null);
@@ -96,7 +101,7 @@ const { reviews, loading: reviewLoading } = useSelector((state) => state.product
     setImageLoaded(false);
   };
 
-    const handleReviewSubmit = (e) => {
+  const handleReviewSubmit = (e) => {
     e.preventDefault();
     dispatch(createProductReview(product.slug, { rating, comment }));
     setRating(0);
@@ -137,6 +142,7 @@ const { reviews, loading: reviewLoading } = useSelector((state) => state.product
       // Add product to cart (no variant selected)
       dispatch(addToCart(product.id, quantity));
     }
+    dispatch(listCart());
     setShowCartModal(true);
   };
 
@@ -242,10 +248,10 @@ const { reviews, loading: reviewLoading } = useSelector((state) => state.product
                       <h1 className="product-title">{product.name}</h1>
                       <div className="d-flex align-items-center mb-2">
                         <div className="star-rating">
-                          {renderStars(product.average_rating)}
+                          {renderStars(product?.average_rating)}
                         </div>
                         <span className="review-count ms-2">
-                          ({product.total_reviews || 0} reviews)
+                          ({product?.total_reviews || 0} reviews)
                         </span>
                       </div>
                     </div>
@@ -449,15 +455,7 @@ const { reviews, loading: reviewLoading } = useSelector((state) => state.product
               </Col>
             </Row>
 
-            {product.total_reviews === 0 && (
-              <Row className="mt-5">
-                <Col>
-                  <Alert variant="info" className="text-center">
-                    No reviews yet. Be the first to review this product!
-                  </Alert>
-                </Col>
-              </Row>
-            )}
+          
 
             {/* REVIEWS SECTION */}
             <Row className="mt-5">
@@ -465,21 +463,35 @@ const { reviews, loading: reviewLoading } = useSelector((state) => state.product
                 <h3 className="mb-4">Customer Reviews</h3>
 
                 {/* Average Rating Summary */}
-                <div className="d-flex align-items-center mb-4 p-3 bg-light rounded shadow-sm">
+                <div
+                  className="d-flex align-items-center mb-4 p-3 bg-light rounded shadow-sm"
+                  aria-label="Product rating summary"
+                >
                   <div className="me-3">
-                    <h1 className="mb-0 text-primary">
-                      {product?.average_rating
-                        ? product.average_rating
-                        : "0.0"}
+                    <h1
+                      className="mb-0 text-primary"
+                      aria-label={`Average rating: ${
+                        product?.average_rating || "0.0"
+                      } out of 5`}
+                    >
+                      {product?.average_rating ? product.average_rating : "0.0"}
                     </h1>
-                    <small className="text-muted">out of 5</small>
                   </div>
                   <div>
-                    <div className="fs-4">
+                    <div
+                      className="fs-4"
+                      aria-label={`${Math.round(
+                        product?.average_rating || 0
+                      )} out of 5 stars`}
+                    >
                       {renderStars(product.average_rating)}
                     </div>
-                    <small className="text-muted">
-                      {product.total_reviews || 0} review(s)
+                    <small
+                      className="text-muted"
+                      aria-label={`${product.total_reviews || 0} reviews`}
+                    >
+                      {product.total_reviews || 0} review
+                      {product.total_reviews !== 1 ? "s" : ""}
                     </small>
                   </div>
                 </div>
@@ -521,41 +533,43 @@ const { reviews, loading: reviewLoading } = useSelector((state) => state.product
                 )}
 
                 {/* Write a Review */}
-                <div className="p-4 bg-light rounded shadow-sm">
-                  <h5 className="mb-3">Write a Review</h5>
-                  <Form onSubmit={handleReviewSubmit}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Rating</Form.Label>
-                      <Form.Select
-                        value={rating}
-                        onChange={(e) => setRating(Number(e.target.value))}
-                      >
-                        <option value="">Select...</option>
-                        <option value="1">⭐ Poor</option>
-                        <option value="2">⭐⭐ Fair</option>
-                        <option value="3">⭐⭐⭐ Good</option>
-                        <option value="4">⭐⭐⭐⭐ Very good</option>
-                        <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
-                      </Form.Select>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Comment</Form.Label>
-                      <Form.Control
-                        as="textarea"
-                        rows={3}
-                        placeholder="Share your thoughts..."
-                        value={comment}
-                        onChange={(e) => setComment(e.target.value)}
-                      />
-                    </Form.Group>
-                    <Button type="submit" variant="dark">
-                      Submit Review
-                    </Button>
-                  </Form>
-                </div>
+                {product.has_purchased && (
+                  <div className="p-4 bg-light rounded shadow-sm">
+                    <h5 className="mb-3">Write a Review</h5>
+                    <Form onSubmit={handleReviewSubmit}>
+                      <Form.Group className="mb-3">
+                        <Form.Label>Rating</Form.Label>
+                        <Form.Select
+                          value={rating}
+                          onChange={(e) => setRating(Number(e.target.value))}
+                        >
+                          <option value="">Select...</option>
+                          <option value="1">⭐ Poor</option>
+                          <option value="2">⭐⭐ Fair</option>
+                          <option value="3">⭐⭐⭐ Good</option>
+                          <option value="4">⭐⭐⭐⭐ Very good</option>
+                          <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+                        </Form.Select>
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label>Comment</Form.Label>
+                        <Form.Control
+                          as="textarea"
+                          rows={3}
+                          placeholder="Share your thoughts..."
+                          value={comment}
+                          onChange={(e) => setComment(e.target.value)}
+                        />
+                      </Form.Group>
+                      <Button type="submit" variant="dark">
+                        Submit Review
+                      </Button>
+                    </Form>
+                  </div>
+                )}
               </Col>
             </Row>
-            
+
 
             {/* Add to Cart Success Modal */}
             <Modal show={showCartModal} onHide={handleCloseCartModal} centered>

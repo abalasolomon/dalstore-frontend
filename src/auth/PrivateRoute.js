@@ -9,13 +9,14 @@ const PrivateRoute = ({ children, roles = [] }) => {
     if (!userInfo) return [];
     
     const userRoles = [];
-    if (userInfo.is_superadmin) userRoles.push('superadmin');
-    if (userInfo.is_staff) userRoles.push('admin');
+    if (userInfo.user?.is_superuser) userRoles.push('superadmin');
+    if (userInfo.user?.is_staff) userRoles.push('admin');
 
     return userRoles;
   };
 
   const userRoles = getUserRoles();
+
   // Not logged in - redirect to login with return URL
   if (!userInfo) {
     return (

@@ -6,7 +6,7 @@ import {
   userLoginReducers,
   userRegisterReducers,
   // userRegisterReducers,
-  // allUsersReducer,
+   allUsersReducer,
 } from "./reducers/usersReducers";
 import {
   emailOtpSendReducer,
@@ -35,6 +35,7 @@ import {
   productRelatedReducer,
   productCategoryReducer,
   productTagReducer,
+  
 
   //  productReviewCreateReducer,
   // productTopRatedReducer,
@@ -53,6 +54,7 @@ import {
 import {
   userOrdersReducer,
   orderDetailReducer,
+  allOrderListReducer,
 } from "./reducers/orderReducers";
 import {
   userProfileReducer,
@@ -62,6 +64,7 @@ import {
 const reducer = combineReducers({
   userLogin: userLoginReducers,
   userRegister: userRegisterReducers,
+  userList : allUsersReducer,
   emailOtpSend: emailOtpSendReducer,
   emailOtpVerify: emailOtpVerifyReducer,
   emailOtpResend: emailOtpResendReducer,
@@ -84,7 +87,7 @@ const reducer = combineReducers({
   productDelete: productDeleteReducer,
   productCategory: productCategoryReducer,
   productTag: productTagReducer,
-
+  deleteProductImage: productDeleteReducer,
   productReviews: productReviewListReducer,
   reviewCreate: productReviewCreateReducer,
   relatedProducts: productRelatedReducer,
@@ -106,6 +109,7 @@ const reducer = combineReducers({
   //ORDERS
   userOrders: userOrdersReducer,
   orderDetail: orderDetailReducer,
+  allOrderList: allOrderListReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("userInfo")

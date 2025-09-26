@@ -58,7 +58,7 @@ function LoginScreen() {
   useEffect(() => {
     if (success && userInfo) {
       const redirect = async () => {
-        const destination = redirectPath || (await getRedirectPath(userInfo));
+        const destination = redirectPath || (await getRedirectPath(userInfo.user));
         console.log("Redirecting to:", destination);
 
         const timer = setTimeout(() => {
@@ -84,8 +84,8 @@ function LoginScreen() {
           {/* Messages for loading, error, success */}
           {loading && <Loader />}
           {error && <Message variant="danger">{error === "Invalid token" ? " Invalid Username or Password ": error}</Message>}
-          {success && userInfo && userInfo.is_email_verified && <Message variant="success">Login successful! Redirecting...</Message>}
-          {success && userInfo && !userInfo.is_email_verified && <Message variant="warning">Login successful! Please verify your email. Redirecting...</Message>}
+          {success && userInfo && userInfo.user.is_email_verified && <Message variant="success">Login successful! Redirecting...</Message>}
+          {success && userInfo && !userInfo.user.is_email_verified && <Message variant="warning">Login successful! Please verify your email. Redirecting...</Message>}
             <Form onSubmit={submitHandler}>
 
               <Form.Group controlId="email" className="mb-3">

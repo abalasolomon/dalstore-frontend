@@ -16,7 +16,19 @@ import {
   CATEGORY_DELETE_SUCCESS,
   CATEGORY_DELETE_FAIL,
 } from "../constants/categoryConstants";
-import { API_URL, getAuthConfig } from "../../config/apiConfig";
+import { API_URL, getAuthConfigMultipart } from "../../config/apiConfig";
+const getAuthConfig = (getState) => {
+  const {
+    userLogin: { userInfo },
+  } = getState();
+
+  return {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${userInfo.access}`,
+    },
+  };
+};
 
 // ✅ Get all categories
 export const listCategories = () => async (dispatch) => {
@@ -41,7 +53,7 @@ export const getCategoryDetails = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: CATEGORY_DETAILS_FAIL,
-      payload: error.response?.data?.detail || error.message,
+      payload: error.response?.data || error.message,
     });
   }
 };
@@ -53,13 +65,19 @@ export const createCategory = (category) => async (dispatch, getState) => {
     const { data } = await axios.post(
       `${API_URL}/api/categories/`,
       category,
-      getAuthConfig(getState)
+      getAuthConfigMultipart()
     );
     dispatch({ type: CATEGORY_CREATE_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
       type: CATEGORY_CREATE_FAIL,
-      payload: error.response?.data?.detail || error.message,
+      payload:
+        error.response && error.response.data
+          ? error.response.data.detail ||
+            error.response.data.error ||
+            error.response.data.message ||
+            error.message
+          : error.message,
     });
   }
 };
@@ -71,13 +89,19 @@ export const updateCategory = (id, category) => async (dispatch, getState) => {
     const { data } = await axios.put(
       `${API_URL}/api/categories/${id}/`,
       category,
-      getAuthConfig(getState)
+      getAuthConfigMultipart()
     );
     dispatch({ type: CATEGORY_UPDATE_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
       type: CATEGORY_UPDATE_FAIL,
-      payload: error.response?.data?.detail || error.message,
+      payload:
+        error.response && error.response.data
+          ? error.response.data.detail ||
+            error.response.data.error ||
+            error.response.data.message ||
+            error.message
+          : error.message,
     });
   }
 };
@@ -86,7 +110,10 @@ export const updateCategory = (id, category) => async (dispatch, getState) => {
 export const deleteCategory = (id) => async (dispatch, getState) => {
   try {
     dispatch({ type: CATEGORY_DELETE_REQUEST });
-    await axios.delete(`${API_URL}/api/categories/${id}/`, getAuthConfig(getState));
+    await axios.delete(
+      `${API_URL}/api/categories/${id}/`,
+      getAuthConfig(getState)
+    );
     dispatch({ type: CATEGORY_DELETE_SUCCESS, payload: id });
   } catch (error) {
     dispatch({

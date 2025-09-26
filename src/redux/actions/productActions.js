@@ -24,6 +24,10 @@ import {
   PRODUCT_CATEGORY_REQUEST,
   PRODUCT_CATEGORY_SUCCESS,
   PRODUCT_CATEGORY_FAIL,
+
+   PRODUCT_IMAGE_DELETE_REQUEST,
+  PRODUCT_IMAGE_DELETE_SUCCESS,
+  PRODUCT_IMAGE_DELETE_FAIL,
 } from "../constants/productConstants";
 import { API_URL } from "../../config/apiConfig";
 
@@ -76,17 +80,27 @@ export const createProduct = (product) => async (dispatch, getState) => {
 
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${userInfo.access}`,
       },
     };
 
-    const { data } = await axios.post(`${API_URL}/`, product, config);
+    const { data } = await axios.post(
+      `${API_URL}/api/products/`,
+      product,
+      config
+    );
     dispatch({ type: PRODUCT_CREATE_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
       type: PRODUCT_CREATE_FAIL,
-      payload: error.response?.data?.detail || error.message,
+      payload:
+        error.response && error.response.data
+          ? error.response.data.detail ||
+            error.response.data.error ||
+            error.response.data.message ||
+            error.message
+          : error.message,
     });
   }
 };
@@ -101,13 +115,13 @@ export const updateProduct =
 
       const config = {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${userInfo.access}`,
         },
       };
 
       const { data } = await axios.put(
-        `${API_URL}/${id}/`,
+        `${API_URL}/api/products/${id}/`,
         updatedProduct,
         config
       );
@@ -115,7 +129,13 @@ export const updateProduct =
     } catch (error) {
       dispatch({
         type: PRODUCT_UPDATE_FAIL,
-        payload: error.response?.data?.detail || error.message,
+        payload:
+          error.response && error.response.data
+            ? error.response.data.detail ||
+              error.response.data.error ||
+              error.response.data.message ||
+              error.message
+            : error.message,
       });
     }
   };
@@ -133,12 +153,18 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
       },
     };
 
-    await axios.delete(`${API_URL}/${id}/`, config);
+    await axios.delete(`${API_URL}/api/products/${id}/`, config);
     dispatch({ type: PRODUCT_DELETE_SUCCESS });
   } catch (error) {
     dispatch({
       type: PRODUCT_DELETE_FAIL,
-      payload: error.response?.data?.detail || error.message,
+      payload:
+        error.response && error.response.data
+          ? error.response.data.detail ||
+            error.response.data.error ||
+            error.response.data.message ||
+            error.message
+          : error.message,
     });
   }
 };
@@ -200,6 +226,36 @@ export const listProductsByTag = (tagSlug) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_TAG_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+export const deleteProductImage = (slug, imageId) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: PRODUCT_IMAGE_DELETE_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.access}`,
+      },
+    };
+
+    await axios.delete(`${API_URL}/api/products/${slug}/images/${imageId}/`, config);
+
+    dispatch({
+      type: PRODUCT_IMAGE_DELETE_SUCCESS,
+      payload: imageId, // so reducer knows which image to remove
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_IMAGE_DELETE_FAIL,
       payload:
         error.response && error.response.data.detail
           ? error.response.data.detail
