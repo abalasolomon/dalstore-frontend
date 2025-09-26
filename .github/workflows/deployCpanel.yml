@@ -23,12 +23,7 @@ jobs:
 
       # Install dependencies (use npm ci if lockfile exists)
       - name: Install dependencies
-        run: |
-          if [ -f package-lock.json ]; then
-            npm ci
-          else
-            npm install
-          fi
+        run: npm install --legacy-peer-deps
 
       # Build project
       - name: Build project
