@@ -130,7 +130,7 @@ const HeroCarousel = () => {
         features: features,
         buttonVariant: "light",
         textColor: "text-white",
-        navigateTo: `/category/${category.slug || category.id}`,
+        navigateTo:  `/category/${category.slug || category.id}`,
       };
     });
   };
