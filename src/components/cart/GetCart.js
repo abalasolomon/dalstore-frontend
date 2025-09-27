@@ -59,6 +59,7 @@ const GetCart = () => {
 
   const clearCartHandler = async () => {
     await dispatch(clearCart());
+    dispatch(listCart());
     showSuccess("Cart cleared successfully");
     setShowConfirm(false);
   };
@@ -68,7 +69,7 @@ const GetCart = () => {
   };
 
   const continueShoppingHandler = () => {
-    navigate("/products");
+    navigate("/");
   };
 
   const items = cart?.items || [];

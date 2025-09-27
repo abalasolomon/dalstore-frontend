@@ -168,7 +168,7 @@ const Checkout = () => {
             <FaShoppingCart className="display-1 text-muted mb-3" />
             <h3>Your cart is empty</h3>
             <p className="text-muted mb-4">Add some items to your cart before checkout</p>
-            <Button variant="primary" onClick={() => navigate("/products")}>
+            <Button variant="primary" onClick={() => navigate("/")}>
               Continue Shopping
             </Button>
           </Card.Body>
