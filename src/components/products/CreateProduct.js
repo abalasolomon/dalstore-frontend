@@ -30,8 +30,8 @@ import {
   FaMoneyBillWave,
   FaInfoCircle,
   FaUpload,
-  FaPalette,
-  FaRuler,
+  // FaPalette,
+  // FaRuler,
   FaArrowRight,
   FaArrowLeft,
   FaCheckCircle

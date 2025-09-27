@@ -1,35 +1,60 @@
-import React, { useState, useEffect } from 'react';
-import { Carousel, Container, Button, Row, Col } from 'react-bootstrap';
-import { 
-  FaArrowRight, 
-  FaRocket, 
-  //FaStar, 
-  FaShoppingBag, 
-  FaGift,
-  FaMobile,
+import React, { useState, useEffect } from "react";
+import {
+  Carousel,
+  Container,
+  Button,
+  Row,
+  Col,
+  Spinner,
+} from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  FaArrowRight,
+  FaRocket,
   FaLaptop,
-  FaHeadphones
-} from 'react-icons/fa';
+  FaHeadphones,
+  FaHome,
+  FaGamepad,
+  FaMobile,
+  FaCamera,
+  FaTshirt,
+} from "react-icons/fa";
+import { listCategories } from "../redux/actions/categoryActions";
+
+// Icon mapping for categories
+const categoryIcons = {
+  electronics: FaLaptop,
+  audio: FaHeadphones,
+  gaming: FaGamepad,
+  smartphones: FaMobile,
+  photography: FaCamera,
+  home: FaHome,
+  fashion: FaTshirt,
+  default: FaRocket,
+};
 
 // Floating Icons Component
-const FloatingIcons = () => {
-  const icons = [FaMobile, FaLaptop, FaHeadphones, FaShoppingBag, FaGift];
-  
+const FloatingIcons = ({ categories }) => {
   return (
     <div className="floating-icons">
-      {icons.map((Icon, index) => (
-        <div
-          key={index}
-          className="floating-icon"
-          style={{
-            left: `${20 + index * 15}%`,
-            animationDelay: `${index * 0.5}s`,
-            animationDuration: `${3 + index * 0.5}s`
-          }}
-        >
-          <Icon className="text-white opacity-25" size={24} />
-        </div>
-      ))}
+      {categories.slice(0, 5).map((category, index) => {
+        const IconComponent =
+          categoryIcons[category.name?.toLowerCase()] || categoryIcons.default;
+        return (
+          <div
+            key={category.id}
+            className="floating-icon"
+            style={{
+              left: `${15 + index * 20}%`,
+              animationDelay: `${index * 0.3}s`,
+              animationDuration: `${4 + index * 0.5}s`,
+            }}
+          >
+            <IconComponent className="text-white opacity-25" size={20} />
+          </div>
+        );
+      })}
     </div>
   );
 };
@@ -41,154 +66,192 @@ const AnimatedShapes = () => {
       <div className="shape shape-1"></div>
       <div className="shape shape-2"></div>
       <div className="shape shape-3"></div>
-      <div className="shape shape-4"></div>
-    </div>
-  );
-};
-
-// Particle Effect
-const Particles = () => {
-  return (
-    <div className="particles">
-      {[...Array(20)].map((_, i) => (
-        <div
-          key={i}
-          className="particle"
-          style={{
-            left: `${Math.random() * 100}%`,
-            animationDelay: `${Math.random() * 5}s`,
-            animationDuration: `${3 + Math.random() * 4}s`
-          }}
-        ></div>
-      ))}
     </div>
   );
 };
 
 const HeroCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const slides = [
-{
-  title: "New MacBook Pro",
-  subtitle: "Supercharged for pros. Now with M2 Pro and M2 Max chips.",
-  gradient: "linear-gradient(135deg, #000000 0%, #434343 100%)", // 🖤 sleek black gradient
-  icon: FaLaptop,
-  buttonText: "Shop Now",
-  features: ["M2 Chip", "8-Core CPU", "10-Core GPU", "16GB RAM"]
-},
-{
-  title: "Summer Sale",
-  subtitle: "Up to 50% off on select electronics. Limited time offer!",
-  gradient: "linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%)", // 🟠 warm orange gradient
-  icon: FaGift,
-  buttonText: "View Deals",
-  features: ["50% Off", "Free Shipping", "Limited Time", "Hot Deals"]
-},
-{
-  title: "Wireless Freedom",
-  subtitle: "Latest wireless headphones with noise cancellation technology",
-  gradient: "linear-gradient(135deg,rgb(255, 218, 7) 0%,rgb(250, 184, 2) 100%)", // ⚪ clean white gradient
-  icon: FaHeadphones,
-  buttonText: "Explore",
-  features: ["Noise Cancel", "30h Battery", "Wireless", "Hi-Fi Sound"]
-}
-
-  ];
+  // Get categories from Redux store
+  const categoryList = useSelector((state) => state.categoryList);
+  const { loading, categories = [] } = categoryList;
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % slides.length);
-    }, 5000);
-    
-    return () => clearInterval(interval);
+    if (categories.length === 0) {
+      dispatch(listCategories());
+    }
+  }, [dispatch, categories.length]);
+
+  // Consistent color scheme - using brand colors
+  const brandColors = {
+    primary: "linear-gradient(135deg, #FF8008 0%, #FFC837 100%)", // Orange
+    secondary: "linear-gradient(135deg, #000000 0%, #434343 100%)", // Black
+    accent: "linear-gradient(135deg, #FF8008 0%, #000000 100%)", // Orange + Black mix
+    dark: "linear-gradient(135deg, #2C3E50 0%, #4CA1AF 100%)", // Dark (unchanged)
+  };
+
+  // Generate slides from categories
+  const generateSlidesFromCategories = () => {
+    if (categories.length === 0) {
+      return [
+        {
+          id: 1,
+          title: "Welcome to Our Store",
+          subtitle: "Discover amazing products at great prices",
+          gradient: brandColors.primary,
+          icon: FaRocket,
+          buttonText: "Start Shopping",
+          features: ["Quality Products", "Fast Shipping", "Best Prices"],
+          buttonVariant: "light",
+          textColor: "text-white",
+          navigateTo: "/products",
+        },
+      ];
+    }
+
+    const colorKeys = Object.keys(brandColors);
+
+    return categories.slice(0, 4).map((category, index) => {
+      const IconComponent =
+        categoryIcons[category.name?.toLowerCase()] || categoryIcons.default;
+      const features = getCategoryFeatures(category.name);
+      const colorKey = colorKeys[index % colorKeys.length];
+
+      return {
+        id: category.id,
+        title: category.name,
+        subtitle: `Explore our premium ${category.name.toLowerCase()} collection`,
+        gradient: brandColors[colorKey],
+        icon: IconComponent,
+        buttonText: `Shop ${category.name}`,
+        features: features,
+        buttonVariant: "light",
+        textColor: "text-white",
+        navigateTo: `/category/${category.slug || category.id}`,
+      };
+    });
+  };
+
+  const getCategoryFeatures = (categoryName) => {
+    const featureMap = {
+      electronics: ["Latest Tech", "Premium Quality", "Warranty"],
+      audio: ["Hi-Fi Sound", "Noise Cancel", "Wireless"],
+      gaming: ["High Performance", "Pro Gaming", "Fast Delivery"],
+      smartphones: ["5G Ready", "Pro Camera", "Long Battery"],
+      photography: ["4K Video", "Pro Lenses", "Stabilization"],
+      home: ["Smart Features", "Energy Saving", "Easy Use"],
+      fashion: ["Premium Materials", "Trending", "Comfort Fit"],
+    };
+
+    const lowerName = categoryName?.toLowerCase();
+    for (const [key, features] of Object.entries(featureMap)) {
+      if (lowerName?.includes(key)) {
+        return features;
+      }
+    }
+
+    return ["Quality Products", "Best Prices", "Fast Shipping"];
+  };
+
+  const slides = generateSlidesFromCategories();
+
+  useEffect(() => {
+    if (slides.length > 0) {
+      const interval = setInterval(() => {
+        setActiveIndex((prev) => (prev + 1) % slides.length);
+      }, 5000);
+      return () => clearInterval(interval);
+    }
   }, [slides.length]);
+
+  const handleButtonClick = (navigateTo) => {
+    navigate(navigateTo);
+  };
+
+  if (loading) {
+    return (
+      <Container className="my-5">
+        <div
+          className="d-flex justify-content-center align-items-center"
+          style={{ height: "400px" }}
+        >
+          <Spinner animation="border" variant="primary" />
+        </div>
+      </Container>
+    );
+  }
 
   return (
     <div className="hero-carousel-wrapper position-relative overflow-hidden">
-      <Carousel 
-        fade 
-        activeIndex={activeIndex} 
+      <Carousel
+        fade
+        activeIndex={activeIndex}
         onSelect={setActiveIndex}
         indicators={false}
         controls={false}
         className="hero-carousel mb-4"
       >
         {slides.map((slide, index) => (
-          <Carousel.Item key={index} interval={5000}>
+          <Carousel.Item key={slide.id} interval={5000}>
             <div
               className="hero-slide d-flex align-items-center position-relative"
               style={{
                 background: slide.gradient,
-                height: "500px",
-                position: 'relative'
+                height: "450px",
               }}
             >
               <AnimatedShapes />
-              <Particles />
-              <FloatingIcons />
-              
+              <FloatingIcons categories={categories} />
+
               <Container>
                 <Row className="align-items-center">
-                  <Col lg={6}>
-                    <div className="hero-content text-white">
-                      {/* Animated Badge */}
+                  <Col lg={8}>
+                    <div className={`hero-content ${slide.textColor}`}>
+                      {/* Category Badge */}
                       <div className="d-flex align-items-center mb-3">
                         <div className="pulse-dot me-2"></div>
-                        <span className="badge bg-white text-dark px-3 py-2 rounded-pill">
-                          <FaRocket className="me-2" />
-                          New Arrival
+                        <span className="badge bg-white bg-opacity-25 text-white px-3 py-2 rounded-pill">
+                          <slide.icon className="me-2" />
+                          Featured
                         </span>
                       </div>
-                      
-                      <h1 className="display-4 fw-bold mb-3 animate-text">
-                        {slide.title}
+
+                      <h1 className="display-5 fw-bold mb-3">
+                        {slide.title} Collection
                       </h1>
-                      
-                      <p className="lead mb-4 fs-5">
-                        {slide.subtitle}
-                      </p>
+
+                      <p className="lead mb-4">{slide.subtitle}</p>
 
                       {/* Features Tags */}
                       <div className="d-flex flex-wrap gap-2 mb-4">
                         {slide.features.map((feature, i) => (
-                          <span key={i} className="badge bg-light bg-opacity-25 text-white px-3 py-2">
+                          <span
+                            key={i}
+                            className="badge bg-light bg-opacity-25 text-white px-3 py-2"
+                          >
                             {feature}
                           </span>
                         ))}
                       </div>
 
                       <Button
-                        variant="light"
+                        variant={slide.buttonVariant}
                         size="lg"
-                        className="rounded-pill px-4 py-3 fw-semibold hero-button"
+                        className="rounded-pill px-4 py-3 fw-semibold"
+                        onClick={() => handleButtonClick(slide.navigateTo)}
                       >
-                        {slide.buttonText} 
-                        <FaArrowRight className="ms-2 animate-arrow" />
+                        {slide.buttonText}
+                        <FaArrowRight className="ms-2" />
                       </Button>
-
-                      {/* Stats */}
-                      <div className="d-flex gap-4 mt-4 text-white-50">
-                        <div className="text-center">
-                          <div className="fw-bold fs-3">500+</div>
-                          <small>Happy Customers</small>
-                        </div>
-                        <div className="text-center">
-                          <div className="fw-bold fs-3">24/7</div>
-                          <small>Support</small>
-                        </div>
-                        <div className="text-center">
-                          <div className="fw-bold fs-3">1Y</div>
-                          <small>Warranty</small>
-                        </div>
-                      </div>
                     </div>
                   </Col>
-                  
-                  <Col lg={6} className="text-center">
+
+                  <Col lg={4} className="text-center d-none d-lg-block">
                     <div className="hero-icon-container">
                       <slide.icon className="hero-main-icon" />
-                      <div className="icon-glow"></div>
                     </div>
                   </Col>
                 </Row>
@@ -199,37 +262,45 @@ const HeroCarousel = () => {
       </Carousel>
 
       {/* Custom Indicators */}
-      <div className="custom-indicators position-absolute bottom-0 start-50 translate-middle-x mb-4">
-        {slides.map((_, index) => (
-          <button
-            key={index}
-            className={`indicator ${activeIndex === index ? 'active' : ''}`}
-            onClick={() => setActiveIndex(index)}
-          >
-            <span></span>
-          </button>
-        ))}
-      </div>
+      {slides.length > 1 && (
+        <div className="custom-indicators position-absolute bottom-0 start-50 translate-middle-x mb-3">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              className={`indicator ${activeIndex === index ? "active" : ""}`}
+              onClick={() => setActiveIndex(index)}
+            >
+              <span></span>
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Navigation Arrows */}
-      <button 
-        className="carousel-control custom-prev"
-        onClick={() => setActiveIndex((activeIndex - 1 + slides.length) % slides.length)}
-      >
-        ‹
-      </button>
-      <button 
-        className="carousel-control custom-next"
-        onClick={() => setActiveIndex((activeIndex + 1) % slides.length)}
-      >
-        ›
-      </button>
+      {slides.length > 1 && (
+        <>
+          <button
+            className="carousel-control custom-prev"
+            onClick={() =>
+              setActiveIndex((activeIndex - 1 + slides.length) % slides.length)
+            }
+          >
+            ‹
+          </button>
+          <button
+            className="carousel-control custom-next"
+            onClick={() => setActiveIndex((activeIndex + 1) % slides.length)}
+          >
+            ›
+          </button>
+        </>
+      )}
 
       <style jsx>{`
         .hero-carousel-wrapper {
-          border-radius: 20px;
+          border-radius: 15px;
           overflow: hidden;
-          box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         .hero-slide {
@@ -261,90 +332,55 @@ const HeroCarousel = () => {
         .shape {
           position: absolute;
           border-radius: 50%;
-          background: rgba(255,255,255,0.1);
+          background: rgba(255, 255, 255, 0.1);
           animation: float 8s ease-in-out infinite;
         }
 
-        .shape-1 { width: 100px; height: 100px; top: 10%; left: 10%; }
-        .shape-2 { width: 150px; height: 150px; bottom: 20%; right: 10%; }
-        .shape-3 { width: 80px; height: 80px; top: 50%; left: 80%; }
-        .shape-4 { width: 120px; height: 120px; bottom: 10%; left: 20%; }
-
-        .particles {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          pointer-events: none;
+        .shape-1 {
+          width: 80px;
+          height: 80px;
+          top: 20%;
+          left: 10%;
         }
-
-        .particle {
-          position: absolute;
-          width: 4px;
-          height: 4px;
-          background: rgba(255,255,255,0.6);
-          border-radius: 50%;
-          animation: float 5s ease-in-out infinite;
+        .shape-2 {
+          width: 120px;
+          height: 120px;
+          bottom: 30%;
+          right: 15%;
+        }
+        .shape-3 {
+          width: 60px;
+          height: 60px;
+          top: 60%;
+          left: 85%;
         }
 
         .hero-main-icon {
-          font-size: 8rem;
-          color: rgba(255,255,255,0.8);
-          animation: bounce 3s ease-in-out infinite;
+          font-size: 6rem;
+          color: rgba(255, 255, 255, 0.9);
         }
 
-        .icon-glow {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 200px;
-          height: 200px;
-          background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+        .pulse-dot {
+          width: 10px;
+          height: 10px;
+          background: #ff6b6b;
           border-radius: 50%;
           animation: pulse 2s ease-in-out infinite;
         }
 
-        .pulse-dot {
-          width: 12px;
-          height: 12px;
-          background: #ff6b6b;
-          border-radius: 50%;
-          animation: pulse 1.5s ease-in-out infinite;
-        }
-
-        .hero-button {
-          transition: all 0.3s ease;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .hero-button:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-
-        .animate-arrow {
-          animation: slide 1s ease-in-out infinite alternate;
-        }
-
-        .animate-text {
-          animation: slideIn 1s ease-out;
-        }
-
         .custom-indicators {
           display: flex;
-          gap: 10px;
+          gap: 8px;
         }
 
         .indicator {
-          width: 12px;
-          height: 12px;
+          width: 10px;
+          height: 10px;
           border: 2px solid white;
           border-radius: 50%;
           background: transparent;
           cursor: pointer;
           transition: all 0.3s ease;
-          position: relative;
         }
 
         .indicator.active {
@@ -356,12 +392,12 @@ const HeroCarousel = () => {
           position: absolute;
           top: 50%;
           transform: translateY(-50%);
-          background: rgba(255,255,255,0.2);
+          background: rgba(255, 255, 255, 0.2);
           border: none;
           color: white;
-          font-size: 2rem;
-          width: 50px;
-          height: 50px;
+          font-size: 1.5rem;
+          width: 40px;
+          height: 40px;
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -371,43 +407,49 @@ const HeroCarousel = () => {
           backdrop-filter: blur(10px);
         }
 
-        .custom-prev { left: 20px; }
-        .custom-next { right: 20px; }
+        .custom-prev {
+          left: 15px;
+        }
+        .custom-next {
+          right: 15px;
+        }
 
         .carousel-control:hover {
-          background: rgba(255,255,255,0.3);
-          transform: translateY(-50%) scale(1.1);
+          background: rgba(255, 255, 255, 0.3);
         }
 
         @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(180deg); }
-        }
-
-        @keyframes bounce {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
+          0%,
+          100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
         }
 
         @keyframes pulse {
-          0%, 100% { opacity: 1; transform: scale(1); }
-          50% { opacity: 0.7; transform: scale(1.05); }
-        }
-
-        @keyframes slide {
-          0% { transform: translateX(0px); }
-          100% { transform: translateX(5px); }
-        }
-
-        @keyframes slideIn {
-          0% { transform: translateX(-50px); opacity: 0; }
-          100% { transform: translateX(0px); opacity: 1; }
+          0%,
+          100% {
+            opacity: 1;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 0.7;
+            transform: scale(1.1);
+          }
         }
 
         @media (max-width: 768px) {
-          .hero-slide { height: 400px; }
-          .hero-main-icon { font-size: 4rem; }
-          .display-4 { font-size: 2rem; }
+          .hero-slide {
+            height: 400px;
+          }
+          .hero-main-icon {
+            font-size: 4rem;
+          }
+          .display-5 {
+            font-size: 2rem;
+          }
         }
       `}</style>
     </div>
