@@ -14,17 +14,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Install Node.js and dependencies
+      # Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
+          cache: 'npm'   # 👈 cache node_modules based on lockfile
 
+      # Install dependencies (use npm ci if lockfile exists)
       - name: Install dependencies
-        run: npm install
+        run: npm install --legacy-peer-deps
 
+      # Build project
       - name: Build project
         run: npm run build
+
+      # Debug build folder
+      - name: List build output
+        run: ls -R ./build || ls -R ./dist
 
       # Deploy via FTP to cPanel
       - name: Upload to cPanel via FTP
@@ -34,5 +41,5 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /public_html/   # adjust if needed
-          local-dir: ./build          # assuming React/Vite build output
-          log-level: verbose            # 👈 add this for detailed logs
+          local-dir: ./build          # or ./dist if Vite
+          log-level: verbose
