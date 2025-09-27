@@ -40,6 +40,6 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /public_html/   # adjust if needed
+          server-dir: /   # adjust if needed
           local-dir: ./build/          # or ./dist if Vite
           log-level: verbose
